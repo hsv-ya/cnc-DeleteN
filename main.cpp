@@ -3,8 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 
-void show_example() {
-    printf("\
+void showExample() {
+	printf("\
 \n \
   Example:\n \
 \n \
@@ -16,63 +16,63 @@ void show_example() {
 	");
 }
 
-void show_usage() {
-    printf("\
+void showUsage() {
+	printf("\
 \n \
   Usage:\n \
 \n \
-    'filename.exe' view this help\n \
+    'filename.exe' show this help\n \
     'filename.exe input_filename'\n \
     'filename.exe input_filename output_filename'\n \
 	");
-	show_example();
+	showExample();
 }
 
 int main(int argc, char *args[]) {
-    FILE *fi, *fo;
+	FILE *fi, *fo;
 
-    char filename[1024]={0};
-    char buf[1024];
-    char *pch;
+	char fileName[1024] = {0};
+	char buf[1024];
+	char *pch;
 
-    switch (argc - 1) {
-    case 2 :
-        fi = fopen(args[1], "r");
-        pch = args[2];
-        break;
-    case 1 :
-        strcpy(filename, args[1]);
-        pch = strrchr(filename, '.');
-        if (NULL != pch)
-            *pch = 0;
-        pch = filename;
-        strcat(pch, "_out.cnc");
-        fi = fopen(args[1], "r");
-        pch = filename;
-        break;
-    default:
-        show_usage();
-        return 0;
-    }
+	switch (argc - 1) {
+	  case 2 :
+		fi = fopen(args[1], "r");
+		pch = args[2];
+		break;
+	  case 1 :
+		strcpy(fileName, args[1]);
+		pch = strrchr(fileName, '.');
+		if (NULL != pch)
+			*pch = 0;
+		pch = fileName;
+		strcat(pch, "_out.cnc");
+		fi = fopen(args[1], "r");
+		pch = fileName;
+		break;
+	  default:
+		showUsage();
+		return 1;
+	}
 
-    if (NULL == fi) {
-        printf("Error opening input file '%s'!\nprogram end.\n", args[2]);
-        show_example();
-        return 1;
-    }
+	if (NULL == fi) {
+		printf("Error opening input file '%s'!\nprogram end.\n", args[2]);
+		showExample();
+		return 2;
+	}
 
-    fo = fopen(pch, "w");
+	fo = fopen(pch, "w");
 
-    if (NULL == fo) {
-        fclose(fi);
-        printf("Error opening output file '%s'!\nprogram end.\n", pch);
-        show_example();
-        return 1;
-    }
+	if (NULL == fo) {
+		fclose(fi);
+		printf("Error opening output file '%s'!\nprogram end.\n", pch);
+		showExample();
+		return 3;
+	}
 
-    do {
-        if (fgets(buf, sizeof(buf), fi) == NULL)
-            break;
+	do {
+		if (fgets(buf, sizeof(buf), fi) == NULL)
+			break;
 
 		pch = buf;
 
@@ -89,10 +89,10 @@ int main(int argc, char *args[]) {
 
 		fprintf(fo, "%s", pch);
 
-    } while(!feof(fi));
+	} while(!feof(fi));
 
-    fclose(fi);
-    fclose(fo);
+	fclose(fi);
+	fclose(fo);
 
-    return 0;
+	return 0;
 }
