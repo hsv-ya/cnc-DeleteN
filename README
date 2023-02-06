@@ -1,0 +1,8 @@
+Simple removal of 'NXXXX' from lines in '*.cnc' files.
+
+Example:
+	input  'N0010 G0 X0 Y0'
+	result 'G0 X0 Y0'
+
+PS. The mandatory condition 'NXXXX' must be separated
+from the rest of the data by a space.
